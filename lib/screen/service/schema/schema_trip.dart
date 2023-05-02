@@ -6,27 +6,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '_schema.dart';
 
 enum TripStatus {
-  created,
   active,
-  completed,
-  cancelled;
+  created,
+  canceled,
+  completed;
 
   static TripStatus fromString(String value) {
     switch (value) {
-      case 'created':
-        return created;
       case 'active':
         return active;
+      case 'created':
+        return created;
       case 'completed':
         return completed;
       default:
-        return cancelled;
+        return canceled;
     }
-  }
-
-  @override
-  String toString() {
-    return name;
   }
 }
 
@@ -52,9 +47,9 @@ class TripSchema extends Equatable {
   static const String statusKey = 'status';
   static const String departureKey = 'departure';
   static const String destinationKey = 'destination';
-  static const String departureDateKey = 'departureDate';
+  static const String departureDateKey = 'departure_date';
   static const String seatsAvailableKey = 'seats_available';
-  static const String destinationDateKey = 'destinationDate';
+  static const String destinationDateKey = 'destination_date';
 
   final DocumentReference<TripSchema?>? reference;
 
@@ -63,9 +58,9 @@ class TripSchema extends Equatable {
   final TripStatus status;
   final int seatsAvailable;
   final PlaceSchema departure;
-  final DateTime departureDate;
-  final DateTime destinationDate;
+  final DateTime? departureDate;
   final PlaceSchema destination;
+  final DateTime? destinationDate;
   final DocumentReference<UserSchema?> driver;
 
   @override
@@ -77,18 +72,18 @@ class TripSchema extends Equatable {
       status,
       reference,
       departure,
-      departureDate,
-      destinationDate,
       destination,
+      departureDate,
       seatsAvailable,
+      destinationDate,
     ];
   }
 
   TripSchema copyWith({
     int? seats,
-    int? seatsAvailable,
     double? price,
     TripStatus? status,
+    int? seatsAvailable,
     PlaceSchema? departure,
     DateTime? departureDate,
     DateTime? destinationDate,
@@ -133,9 +128,9 @@ class TripSchema extends Equatable {
       seatsAvailable: data[seatsAvailableKey],
       status: TripStatus.fromString(data[statusKey]),
       departure: PlaceSchema.fromMap(data[departureKey]),
-      departureDate: DateTime.parse(data[departureDateKey]),
       destination: PlaceSchema.fromMap(data[destinationKey]),
-      destinationDate: DateTime.parse(data[destinationDateKey]),
+      departureDate: (data[departureDateKey] as Timestamp).toDate(),
+      destinationDate: (data[destinationDateKey] as Timestamp?)?.toDate(),
     );
   }
 
@@ -169,26 +164,24 @@ class TripSchema extends Equatable {
     return jsonEncode(toMap());
   }
 
-  static DocumentReference<TripSchema?> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<TripSchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static DocumentReference<TripSchema> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<TripSchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }
 
-  static CollectionReference<TripSchema?> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<TripSchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static CollectionReference<TripSchema> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<TripSchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }

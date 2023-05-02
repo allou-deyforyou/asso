@@ -233,7 +233,7 @@ class PlatformBuilder extends StatelessWidget {
     this.windowsBuilder,
   }) : super(key: key);
 
-  final WidgetBuilder builder;
+  final Widget Function(BuildContext context, TargetPlatform platform) builder;
   final WidgetBuilder? iOSBuilder;
   final WidgetBuilder? androidBuilder;
   final WidgetBuilder? macOSBuilder;
@@ -245,19 +245,19 @@ class PlatformBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return androidBuilder?.call(context) ?? builder(context);
+        return androidBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       case TargetPlatform.iOS:
-        return iOSBuilder?.call(context) ?? builder(context);
+        return iOSBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       case TargetPlatform.macOS:
-        return macOSBuilder?.call(context) ?? builder(context);
+        return macOSBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       case TargetPlatform.windows:
-        return windowsBuilder?.call(context) ?? builder(context);
+        return windowsBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       case TargetPlatform.linux:
-        return linuxBuilder?.call(context) ?? builder(context);
+        return linuxBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       case TargetPlatform.fuchsia:
-        return fuchsiaBuilder?.call(context) ?? builder(context);
+        return fuchsiaBuilder?.call(context) ?? builder(context, defaultTargetPlatform);
       default:
-        return builder(context);
+        return builder(context, defaultTargetPlatform);
     }
   }
 }

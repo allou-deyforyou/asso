@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '_widget.dart';
 
-class TravelMapSearchAppBar extends DefaultAppBar {
-  const TravelMapSearchAppBar({
+class TripMapSearchAppBar extends DefaultAppBar {
+  const TripMapSearchAppBar({
     super.key,
     this.leading,
     this.trailing,

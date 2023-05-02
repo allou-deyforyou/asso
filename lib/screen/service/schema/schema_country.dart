@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 class CountrySchema extends Equatable {
   const CountrySchema({
     required this.name,
-    required this.iso2,
+    required this.dial,
     required this.code,
     this.reference,
   });
@@ -14,13 +14,13 @@ class CountrySchema extends Equatable {
   static const String schema = 'countries';
 
   static const String nameKey = 'name';
-  static const String iso2Key = 'iso2';
+  static const String dialKey = 'dial';
   static const String codeKey = 'code';
 
   final DocumentReference<CountrySchema?>? reference;
 
   final String name;
-  final String iso2;
+  final String dial;
   final String code;
 
   @override
@@ -28,7 +28,7 @@ class CountrySchema extends Equatable {
     return [
       code,
       name,
-      iso2,
+      dial,
       reference,
     ];
   }
@@ -40,13 +40,13 @@ class CountrySchema extends Equatable {
 
   CountrySchema copyWith({
     String? name,
-    String? iso2,
+    String? dial,
     String? code,
     DocumentReference<CountrySchema?>? reference,
   }) {
     return CountrySchema(
       name: name ?? this.name,
-      iso2: iso2 ?? this.iso2,
+      dial: dial ?? this.dial,
       code: code ?? this.code,
       reference: reference ?? this.reference,
     );
@@ -55,7 +55,7 @@ class CountrySchema extends Equatable {
   CountrySchema clone() {
     return copyWith(
       name: name,
-      iso2: iso2,
+      dial: dial,
       code: code,
       reference: reference,
     );
@@ -69,7 +69,7 @@ class CountrySchema extends Equatable {
     return CountrySchema(
       code: data[codeKey],
       name: data[nameKey],
-      iso2: data[iso2Key],
+      dial: data[dialKey],
     );
   }
 
@@ -77,7 +77,7 @@ class CountrySchema extends Equatable {
     return {
       codeKey: code,
       nameKey: name,
-      iso2Key: iso2,
+      dialKey: dial,
     }..removeWhere((key, value) => value == null);
   }
 
@@ -97,26 +97,24 @@ class CountrySchema extends Equatable {
     return jsonEncode(toMap());
   }
 
-  static DocumentReference<CountrySchema?> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<CountrySchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static DocumentReference<CountrySchema> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<CountrySchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }
 
-  static CollectionReference<CountrySchema?> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<CountrySchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static CollectionReference<CountrySchema> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<CountrySchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }

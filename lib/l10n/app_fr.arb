@@ -1,13 +1,13 @@
 {
     "asso": "asso",
     "travel": "déplacement",
-    "nearyou": "proche de vous",
+    "nearyou": "près de vous",
     "fromyou": "de you",
     "setting": "paramètre",
     "cancel": "annuler",
     "wheretogo": "où aller ?",
     "currentposition": "position actuelle",
-    "startingpoint": "point de départ",
+    "departurepoint": "point de départ",
     "carpooling": "covoiturage",
     "createtravel": "créer un covoiturage",
     "newcarpool": "nouveau covoiturage",
@@ -16,9 +16,12 @@
     "count": "nombre",
     "participation": "participation",
     "amount": "montant",
+    "price": "prix",
     "description": "description",
     "type": "ecrire",
     "timeelapsed": "temps écoulé",
     "create": "créer",
-    "start": "commencer"
+    "start": "commencer",
+    "notification": "notification"
+
 }

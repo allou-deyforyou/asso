@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "521131222365",
+    "project_id": "asso-e4e43",
+    "storage_bucket": "asso-e4e43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521131222365:android:7b4b2acb4a525ff766b4b4",
+        "android_client_info": {
+          "package_name": "com.asso.asso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521131222365-o62fgvdklq8p2a6soshtd38pdr6290ms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw2_Zg169pL27RVf-Na-_w53vzRTYrDmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521131222365-o62fgvdklq8p2a6soshtd38pdr6290ms.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521131222365-0hlr7bujqitdlnupcqbp20l54mg79j7k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.asso.Asso"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

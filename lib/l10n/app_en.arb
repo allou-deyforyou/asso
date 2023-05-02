@@ -7,7 +7,7 @@
     "cancel": "cancel",
     "wheretogo": "where to go?",
     "currentposition": "current position",
-    "startingpoint": "starting point",
+    "departurepoint": "departure point",
     "carpooling": "carpooling",
     "createtravel": "create a carpool",
     "newcarpool": "new carpool",
@@ -16,9 +16,11 @@
     "count": "count",
     "participation": "participation",
     "amount": "amount",
+    "price": "price",
     "description": "description",
     "type": "type",
     "timeelapsed": "time elapsed",
     "create": "create",
-    "start": "start"
+    "start": "start",
+    "notification": "notification"
 }

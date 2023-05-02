@@ -31,6 +31,7 @@ class CustomListTile extends StatelessWidget {
     this.selectedTileColor,
     this.horizontalTitleGap,
     this.height,
+    this.separatorHeight,
   }) : super(key: key);
 
   final EdgeInsetsGeometry? contentPadding;
@@ -40,6 +41,8 @@ class CustomListTile extends StatelessWidget {
   final TextStyle? style;
 
   final double? height;
+  final double? separatorHeight;
+
   final double? horizontalTitleGap;
 
   final VoidCallback? onLongPress;
@@ -97,73 +100,77 @@ class CustomListTile extends StatelessWidget {
       onLongPress: onLongPress,
       borderRadius: borderRadius,
       customBorder: shape,
-      child: Container(
-        padding: contentPadding ?? padding,
-        decoration: decoration,
-        height: height ?? ((title != null && subtitle != null) ? 55.0 : 48.0),
-        child: Theme(
-          data: theme,
-          child: IconTheme.merge(
-            data: IconThemeData(color: _iconColor(theme), size: 20.0),
-            child: Row(
-              children: <Widget>[
-                if (leading != null)
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(end: horizontalTitleGap ?? 8.0),
-                    child: leading,
-                  ),
-                if (title != null && subtitle != null)
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        DefaultTextStyle(
-                          style: style ??
-                              cupertinoTheme.textTheme.textStyle.copyWith(
-                                color: _textColor(theme),
-                              ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          child: title!,
-                        ),
-                        const SizedBox(height: 2.0),
-                        DefaultTextStyle(
-                          style: style ??
-                              cupertinoTheme.textTheme.tabLabelTextStyle.copyWith(
-                                color: textColor,
-                              ),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          child: subtitle!,
-                        ),
-                      ],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: height ?? ((title != null && subtitle != null) ? 55.0 : 48.0),
+        ),
+        child: Container(
+          padding: contentPadding ?? padding,
+          decoration: decoration,
+          child: Theme(
+            data: theme,
+            child: IconTheme.merge(
+              data: IconThemeData(color: _iconColor(theme), size: 20.0),
+              child: Row(
+                children: <Widget>[
+                  if (leading != null)
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(end: horizontalTitleGap ?? 8.0),
+                      child: leading,
                     ),
-                  )
-                else if (title != null || subtitle != null)
-                  Expanded(
-                    child: DefaultTextStyle(
-                      style: style ??
-                          cupertinoTheme.textTheme.textStyle.copyWith(
-                            color: _textColor(theme) ?? (subtitle != null ? cupertinoTheme.textTheme.tabLabelTextStyle.color : null),
+                  if (title != null && subtitle != null)
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          DefaultTextStyle(
+                            style: style ??
+                                cupertinoTheme.textTheme.textStyle.copyWith(
+                                  color: _textColor(theme),
+                                ),
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            child: title!,
                           ),
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      child: title ?? subtitle!,
-                    ),
-                  ),
-                if (trailing != null)
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 8.0),
-                    child: DefaultTextStyle(
-                      style: style ??
-                          theme.textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
+                          SizedBox(height: separatorHeight ?? 2.0),
+                          DefaultTextStyle(
+                            style: style ??
+                                cupertinoTheme.textTheme.tabLabelTextStyle.copyWith(
+                                  color: textColor,
+                                ),
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            child: subtitle!,
                           ),
-                      child: trailing!,
+                        ],
+                      ),
+                    )
+                  else if (title != null || subtitle != null)
+                    Expanded(
+                      child: DefaultTextStyle(
+                        style: style ??
+                            cupertinoTheme.textTheme.textStyle.copyWith(
+                              color: _textColor(theme) ?? (subtitle != null ? cupertinoTheme.textTheme.tabLabelTextStyle.color : null),
+                            ),
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                        child: title ?? subtitle!,
+                      ),
                     ),
-                  ),
-              ],
+                  if (trailing != null)
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 8.0),
+                      child: DefaultTextStyle(
+                        style: style ??
+                            theme.textTheme.titleMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                        child: trailing!,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
@@ -319,7 +326,7 @@ class CustomCircleAvatar extends StatelessWidget {
     this.minRadius,
     this.maxRadius,
     this.side = BorderSide.none,
-    this.elevation = 1.5,
+    this.elevation = 0.0,
     this.shape,
   })  : assert(radius == null || (minRadius == null && maxRadius == null)),
         assert(backgroundImage != null || onBackgroundImageError == null),
@@ -368,8 +375,10 @@ class CustomCircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     final ThemeData theme = Theme.of(context);
-    TextStyle textStyle = theme.primaryTextTheme.titleMedium!.copyWith(color: foregroundColor);
-    Color? effectiveBackgroundColor = backgroundColor;
+    final Color? effectiveForegroundColor = foregroundColor ?? (theme.useMaterial3 ? theme.colorScheme.onPrimaryContainer : null);
+    final TextStyle effectiveTextStyle = theme.useMaterial3 ? theme.textTheme.titleMedium! : theme.primaryTextTheme.titleMedium!;
+    TextStyle textStyle = effectiveTextStyle.copyWith(color: effectiveForegroundColor);
+    Color? effectiveBackgroundColor = backgroundColor ?? (theme.useMaterial3 ? theme.colorScheme.primaryContainer : null);
     if (effectiveBackgroundColor == null) {
       switch (ThemeData.estimateBrightnessForColor(textStyle.color!)) {
         case Brightness.dark:
@@ -379,7 +388,7 @@ class CustomCircleAvatar extends StatelessWidget {
           effectiveBackgroundColor = theme.primaryColorDark;
           break;
       }
-    } else if (foregroundColor == null) {
+    } else if (effectiveForegroundColor == null) {
       switch (ThemeData.estimateBrightnessForColor(backgroundColor!)) {
         case Brightness.dark:
           textStyle = textStyle.copyWith(color: theme.primaryColorLight);
@@ -467,16 +476,18 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = this.color ?? Theme.of(context).colorScheme.primary;
-    return CupertinoButton(
-      color: backgroundColor,
-      onPressed: onPressed,
-      minSize: minSize,
-      padding: padding,
-      child: IconTheme(
-        data: IconThemeData(color: color),
-        child: child,
-      ),
-    );
+    return Builder(builder: (context) {
+      return CupertinoButton(
+        color: backgroundColor,
+        onPressed: onPressed,
+        minSize: minSize,
+        padding: padding,
+        child: IconTheme(
+          data: IconThemeData(color: color),
+          child: child,
+        ),
+      );
+    });
   }
 }
 

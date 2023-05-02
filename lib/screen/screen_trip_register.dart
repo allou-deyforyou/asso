@@ -1,53 +1,42 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '_screen.dart';
 
-class TravelRegisterScreen extends StatefulWidget {
-  const TravelRegisterScreen({super.key});
+class TripRegisterScreen extends StatefulWidget {
+  const TripRegisterScreen({super.key});
 
-  static const String path = 'travel/register';
-  static const String name = 'travel_register';
+  static const String path = 'trip/register';
+  static const String name = 'trip_register';
 
   @override
-  State<TravelRegisterScreen> createState() => _TravelRegisterScreenState();
+  State<TripRegisterScreen> createState() => _TripRegisterScreenState();
 }
 
-class _TravelRegisterScreenState extends State<TravelRegisterScreen> {
-  void _pushToTravelMapScreen() {
-    context.pushNamed(TravelMapScreen.name);
+class _TripRegisterScreenState extends State<TripRegisterScreen> {
+  void _pushToTripMapScreen() {
+    context.pushNamed(TripMapScreen.name);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
     final localizations = context.localizations;
-    final cupertinoTheme = context.cupertinoTheme;
     return Scaffold(
-      appBar: TravelRegisterAppBar(
-        onTrailingPressed: _pushToTravelMapScreen,
+      appBar: TripRegisterAppBar(
+        onTrailingPressed: _pushToTripMapScreen,
       ),
-      backgroundColor: defaultTargetPlatform == TargetPlatform.android ? null : cupertinoTheme.barBackgroundColor,
       body: CustomScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           SliverToBoxAdapter(
-            child: LocationSearchPlaceListTile(
-              onTap: () {},
-              subtitle: const Text("Bingerville, Côte d'Ivoire"),
-              title: const Text("Koumassi Mairie"),
-              iconColor: CupertinoColors.activeBlue,
-            ),
-          ),
-          const SliverToBoxAdapter(child: Divider(indent: 40.0)),
-          SliverToBoxAdapter(
-            child: LocationSearchPlaceListTile(
-              onTap: () {},
-              subtitle: const Text("Bingerville, Côte d'Ivoire"),
-              title: const Text("Adjame Mairie"),
-              iconColor: CupertinoColors.activeOrange,
+            child: TripRegisterPlaceListWidget(
+              departureTitle: "Koumassi Mairie",
+              destinationTitle: "Adjame Mairie",
+              departureSubtitle: "Bingerville, Côte d'Ivoire",
+              destinationSubtitle: "Bingerville, Côte d'Ivoire",
+              onDeparturePressed: () {},
+              onDestinationPressed: () {},
             ),
           ),
           const SliverToBoxAdapter(child: Divider()),
@@ -61,7 +50,7 @@ class _TravelRegisterScreenState extends State<TravelRegisterScreen> {
           const SliverToBoxAdapter(child: SizedBox(height: 8.0)),
           SliverToBoxAdapter(
             child: CustomTextField(
-              label: Text(localizations.participation.capitalize()),
+              label: Text(localizations.price.capitalize()),
               placeholder: localizations.amount.capitalize(),
               suffix: const Text("F"),
             ),
@@ -78,15 +67,14 @@ class _TravelRegisterScreenState extends State<TravelRegisterScreen> {
         ],
       ),
       bottomNavigationBar: PlatformBuilder(
-        builder: (context) => const SizedBox.shrink(),
+        builder: (context, platform) => const SizedBox.shrink(),
         androidBuilder: (context) {
-          return SafeArea(
+          return BottomAppBar(
             child: ListTile(
-              shape: Border(top: BorderSide(width: 0.8, color: theme.dividerTheme.color!)),
               title: CupertinoButton.filled(
                 padding: EdgeInsets.zero,
-                borderRadius: BorderRadius.zero,
-                onPressed: _pushToTravelMapScreen,
+                onPressed: _pushToTripMapScreen,
+                borderRadius: BorderRadius.circular(30.0),
                 child: Text(localizations.create.capitalize()),
               ),
             ),

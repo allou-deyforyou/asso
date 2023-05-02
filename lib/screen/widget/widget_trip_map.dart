@@ -6,8 +6,8 @@ import 'package:maplibre_gl/mapbox_gl.dart';
 
 import '_widget.dart';
 
-class TravelMapAppBar extends DefaultAppBar {
-  const TravelMapAppBar({
+class TripMapAppBar extends DefaultAppBar {
+  const TripMapAppBar({
     super.key,
     this.onLeadingPressed,
   });
@@ -27,17 +27,18 @@ class TravelMapAppBar extends DefaultAppBar {
             left: 12.0,
             bottom: 0.0,
             child: Card(
-              elevation: 0.8,
+              elevation: 0.2,
               margin: EdgeInsets.zero,
               shape: const CircleBorder(),
+              color: theme.colorScheme.surface,
               child: CupertinoButton(
                 padding: EdgeInsets.zero,
                 onPressed: () => Navigator.pop(context),
-                child: IconTheme(
-                  data: IconThemeData(color: theme.colorScheme.onSurface),
-                  child: PlatformBuilder(
-                    builder: (context) => const Icon(CupertinoIcons.back),
-                    androidBuilder: (context) => const Icon(CupertinoIcons.arrow_left),
+                child: PlatformBuilder(
+                  builder: (context, platform) => const Icon(CupertinoIcons.back, size: 32.0),
+                  androidBuilder: (context) => IconTheme(
+                    data: IconThemeData(color: theme.colorScheme.onSurface),
+                    child: const Icon(Icons.arrow_back),
                   ),
                 ),
               ),
@@ -47,15 +48,19 @@ class TravelMapAppBar extends DefaultAppBar {
             bottom: 0.0,
             right: 12.0,
             child: Card(
-              elevation: 0.8,
+              elevation: 0.2,
               margin: EdgeInsets.zero,
               shape: const CircleBorder(),
+              color: theme.colorScheme.surface,
               child: CupertinoButton(
                 onPressed: () {},
                 padding: EdgeInsets.zero,
-                child: IconTheme(
-                  data: IconThemeData(color: theme.colorScheme.onSurface),
-                  child: const Icon(CupertinoIcons.drop),
+                child: PlatformBuilder(
+                  builder: (context, platform) => const Icon(CupertinoIcons.ellipsis_vertical),
+                  androidBuilder: (context) => IconTheme(
+                    data: IconThemeData(color: theme.colorScheme.onSurface),
+                    child: const Icon(CupertinoIcons.ellipsis_vertical),
+                  ),
                 ),
               ),
             ),
@@ -66,8 +71,8 @@ class TravelMapAppBar extends DefaultAppBar {
   }
 }
 
-class TravelMap extends StatelessWidget {
-  const TravelMap({
+class TripMap extends StatelessWidget {
+  const TripMap({
     super.key,
     this.onMapIdle,
     this.onMapClick,
@@ -96,9 +101,10 @@ class TravelMap extends StatelessWidget {
       onMapIdle: onMapIdle,
       compassEnabled: false,
       onMapClick: onMapClick,
-      onMapCreated: onMapCreated,
+      useDelayedDisposal: true,
       trackCameraPosition: true,
       onCameraIdle: onCameraIdle,
+      onMapCreated: onMapCreated,
       onMapLongClick: onMapLongClick,
       myLocationEnabled: myLocationEnabled,
       onUserLocationUpdated: onUserLocationUpdated,

@@ -7,10 +7,10 @@ import '_schema.dart';
 
 class UserSchema extends Equatable {
   const UserSchema({
-    required this.uid,
     required this.name,
     required this.phone,
     required this.isDriver,
+    required this.createdAt,
     required this.country,
     this.profileImage,
     this.reference,
@@ -18,50 +18,50 @@ class UserSchema extends Equatable {
 
   static const String schema = 'users';
 
-  static const String uidKey = 'uid';
   static const String nameKey = 'name';
   static const String phoneKey = 'phone';
   static const String countryKey = 'country';
   static const String isDriverKey = 'is_driver';
+  static const String createdAtKey = 'created_at';
   static const String profileImageKey = 'profile_image';
 
   final DocumentReference<UserSchema?>? reference;
 
-  final String uid;
   final String name;
   final String phone;
   final bool isDriver;
+  final DateTime? createdAt;
   final String? profileImage;
   final DocumentReference<CountrySchema?> country;
 
   @override
   List<Object?> get props {
     return [
-      uid,
       name,
       phone,
       country,
       isDriver,
+      createdAt,
       reference,
       profileImage,
     ];
   }
 
   UserSchema copyWith({
-    String? uid,
     String? name,
     String? phone,
     bool? isDriver,
+    DateTime? createdAt,
     String? profileImage,
     DocumentReference<UserSchema?>? reference,
     DocumentReference<CountrySchema?>? country,
   }) {
     return UserSchema(
-      uid: uid ?? this.uid,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       country: country ?? this.country,
       isDriver: isDriver ?? this.isDriver,
+      createdAt: createdAt ?? this.createdAt,
       reference: reference ?? this.reference,
       profileImage: profileImage ?? this.profileImage,
     );
@@ -69,11 +69,11 @@ class UserSchema extends Equatable {
 
   UserSchema clone() {
     return copyWith(
-      uid: uid,
       name: name,
       phone: phone,
       country: country,
       isDriver: isDriver,
+      createdAt: createdAt,
       reference: reference,
       profileImage: profileImage,
     );
@@ -81,22 +81,22 @@ class UserSchema extends Equatable {
 
   static UserSchema fromMap(Map<String, dynamic> data) {
     return UserSchema(
-      uid: data[uidKey],
       name: data[nameKey],
       phone: data[phoneKey],
       isDriver: data[isDriverKey],
       profileImage: data[profileImageKey],
+      createdAt: (data[createdAtKey] as Timestamp?)?.toDate(),
       country: CountrySchema.toFirestoreDocument(data[countryKey]),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      uidKey: uid,
       nameKey: name,
       phoneKey: phone,
       countryKey: country,
       isDriverKey: isDriver,
+      createdAtKey: createdAt,
       profileImageKey: profileImage,
     }..removeWhere((key, value) => value == null);
   }
@@ -117,26 +117,24 @@ class UserSchema extends Equatable {
     return jsonEncode(toMap());
   }
 
-  static DocumentReference<UserSchema?> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<UserSchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static DocumentReference<UserSchema> toFirestoreDocument(DocumentReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<UserSchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }
 
-  static CollectionReference<UserSchema?> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
-    return reference.withConverter<UserSchema?>(
-      toFirestore: (value, options) {
-        return value!.toMap();
-      },
+  static CollectionReference<UserSchema> toFirestoreCollection(CollectionReference<Map<String, dynamic>> reference) {
+    return reference.withConverter<UserSchema>(
       fromFirestore: (snapshot, options) {
-        final data = snapshot.data();
-        return data != null ? fromMap(data) : null;
+        return fromMap(snapshot.data()!);
+      },
+      toFirestore: (value, options) {
+        return value.toMap();
       },
     );
   }

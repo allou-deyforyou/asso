@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # Assets
   flutter_localizations:
     sdk: flutter
@@ -25,10 +25,12 @@ dependencies:
       ref: main
 
   # Services
+  firebase_database: ^10.1.1
   cloud_firestore: ^4.5.0
   firebase_core: ^2.9.0
   firebase_auth: ^4.4.0
-  flutter_less: ^0.0.5
+  flutter_less: ^0.0.6
+  dio: ^5.1.1
 
 dev_dependencies:
   flutter_test:
@@ -57,19 +59,3 @@ flutter:
         - asset: assets/fonts/SF-Pro-Rounded/SF-Pro-Rounded-SemiBold.otf
         - asset: assets/fonts/SF-Pro-Rounded/SF-Pro-Rounded-Thin.otf
         - asset: assets/fonts/SF-Pro-Rounded/SF-Pro-Rounded-UltraLight.otf
-    - family: FiraGO
-      fonts:
-        - asset: assets/fonts/FiraGO/FiraGO-Thin.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Two.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Eight.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-SemiBold.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Regular.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Medium.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Light.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Four.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Hair.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-ExtraLight.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-UltraLight.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-ExtraBold.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Bold.ttf
-        - asset: assets/fonts/FiraGO/FiraGO-Book.ttf

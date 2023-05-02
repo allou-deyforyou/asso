@@ -104,8 +104,9 @@ class CustomTextField extends StatelessWidget {
           ),
         );
       },
-      builder: (context) {
+      builder: (context, platform) {
         return CupertinoListSection(
+          backgroundColor: Colors.transparent,
           topMargin: 0.0,
           header: label,
           children: [

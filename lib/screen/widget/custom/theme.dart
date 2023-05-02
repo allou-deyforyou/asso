@@ -7,26 +7,26 @@ import 'fonts.gen.dart';
 class Themes {
   const Themes._();
 
-  static const Color primaryColor = Color(0xFF007AFF);
+  static const Color primaryColor = Color(0xFFFDB813); // Color(0xFF007AFF);
   static const Color secondaryColor = Color(0xFF000000);
   static const Color tertiaryColor = Color(0xFFFFFFFF);
+  static const Color surfaceColor = Color(0xFFF5F2EF);
 
-  static const Color lightBarBackgroundColor = Color(0xFFF5F4FB);
+  static const Color lightBarBackgroundColor = Color(0xFFFCFBFE);
   static const Color darkBarBackgroundColor = CupertinoColors.black;
 
   static ThemeData get theme {
     return ThemeData(
       useMaterial3: true,
-      primaryColor: primaryColor,
       brightness: Brightness.light,
       fontFamily: FontFamily.sFProRounded,
       canvasColor: CupertinoColors.white,
-      scaffoldBackgroundColor: CupertinoColors.white,
+      scaffoldBackgroundColor: surfaceColor,
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
         secondary: primaryColor,
         tertiary: tertiaryColor,
-        onSecondary: CupertinoColors.white,
+        surface: CupertinoColors.white,
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
@@ -34,23 +34,31 @@ class Themes {
         isCollapsed: true,
         fillColor: CupertinoColors.white,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryColor)),
-        border: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.systemFill)),
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.systemFill)),
-        errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.destructiveRed)),
+        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryColor, width: 0.8)),
+        border: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.systemFill, width: 0.8)),
+        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.systemFill, width: 0.8)),
+        errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: CupertinoColors.destructiveRed, width: 0.8)),
       ),
       dividerTheme: const DividerThemeData(
         space: 0.8,
         thickness: 0.8,
-        color: CupertinoColors.systemGrey5,
+        color: Color(0xFFE0DEDB),
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0.0,
-        backgroundColor: lightBarBackgroundColor,
+        backgroundColor: surfaceColor,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        shape: Border(bottom: BorderSide(width: 0.8, color: CupertinoColors.systemGrey5)),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: CupertinoColors.systemFill.withOpacity(0.2)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(9.0)),
+        ),
       ),
       cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-        barBackgroundColor: lightBarBackgroundColor,
+        barBackgroundColor: surfaceColor,
         textTheme: CupertinoTextThemeData(),
       ),
     );

@@ -9,13 +9,19 @@ class LocationSearchAppBar extends DefaultAppBar {
   @override
   Widget build(BuildContext context) {
     final localizations = context.localizations;
-    return CupertinoNavigationBar(
-      border: const Border.fromBorderSide(BorderSide.none),
-      leading: CustomButton(
-        onPressed: () => Navigator.pop(context),
-        child: Text(localizations.cancel.capitalize()),
-      ),
-    );
+    return PlatformBuilder(androidBuilder: (context) {
+      return AppBar(
+        shape: const Border.fromBorderSide(BorderSide.none),
+      );
+    }, builder: (context, platform) {
+      return CupertinoNavigationBar(
+        border: const Border.fromBorderSide(BorderSide.none),
+        leading: CustomButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(localizations.cancel.capitalize()),
+        ),
+      );
+    });
   }
 }
 
@@ -61,29 +67,42 @@ class LocationSearchTextField extends StatelessWidget {
     final cupertinoTheme = context.cupertinoTheme;
     return Container(
       color: cupertinoTheme.barBackgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          CupertinoSearchTextField(
-            onTap: onSourceTaped,
-            borderRadius: BorderRadius.zero,
-            backgroundColor: Colors.transparent,
-            suffixIcon: const Icon(CupertinoIcons.clear),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            placeholder: localizations.startingpoint.capitalize(),
-            prefixInsets: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 8.0, 0.0),
-            prefixIcon: const Icon(CupertinoIcons.search, color: CupertinoColors.activeBlue),
+          Positioned(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CupertinoSearchTextField(
+                  onTap: onSourceTaped,
+                  borderRadius: BorderRadius.zero,
+                  backgroundColor: Colors.transparent,
+                  suffixIcon: const Icon(CupertinoIcons.clear),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  placeholder: localizations.departurepoint.capitalize(),
+                  prefixInsets: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 8.0, 0.0),
+                  prefixIcon: const Icon(CupertinoIcons.largecircle_fill_circle, color: CupertinoColors.black),
+                ),
+                const Divider(indent: 45.0),
+                CupertinoSearchTextField(
+                  onTap: onDestinationTaped,
+                  borderRadius: BorderRadius.zero,
+                  backgroundColor: Colors.transparent,
+                  suffixIcon: const Icon(CupertinoIcons.clear),
+                  placeholder: localizations.wheretogo.capitalize(),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  prefixInsets: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 8.0, 0.0),
+                  prefixIcon: const Icon(CupertinoIcons.circle, color: CupertinoColors.black),
+                ),
+              ],
+            ),
           ),
-          const Divider(indent: 45.0),
-          CupertinoSearchTextField(
-            onTap: onDestinationTaped,
-            borderRadius: BorderRadius.zero,
-            backgroundColor: Colors.transparent,
-            suffixIcon: const Icon(CupertinoIcons.clear),
-            placeholder: localizations.wheretogo.capitalize(),
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            prefixInsets: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 8.0, 0.0),
-            prefixIcon: const Icon(CupertinoIcons.search, color: CupertinoColors.activeOrange),
+          const Positioned(
+            top: 34.0,
+            left: 25.0,
+            bottom: 30.0,
+            child: VerticalDivider(thickness: 2.0, color: CupertinoColors.black),
           ),
         ],
       ),

@@ -15,7 +15,7 @@ class SettingsAppBar extends DefaultAppBar {
           middle: Text('${localizations.setting}s'.capitalize()),
         );
       },
-      builder: (context) {
+      builder: (context, platform) {
         return AppBar(
           title: Text('${localizations.setting}s'.capitalize()),
         );

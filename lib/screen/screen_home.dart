@@ -27,17 +27,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onLeadingPressed() {
+    _scaffoldKey.currentState!.openDrawer();
     _unfocus();
   }
 
   void _onTrailingPressed() {
+    _scaffoldKey.currentState!.openEndDrawer();
     _unfocus();
-    context.pushNamed(SettingsScreen.name);
   }
 
   void _onLocationSearchPressed() {
-    _unfocus();
     context.pushNamed(LocationSearchScreen.name);
+  }
+
+  void _onTripItemPressed() {
+    context.pushNamed(TripContentScreen.name);
   }
 
   @override
@@ -52,15 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = context.localizations;
+    // final localizations = context.localizations;
     return Scaffold(
       key: _scaffoldKey,
+      drawer: const HomeDrawer(),
+      endDrawer: const HomeEndDrawer(),
       appBar: HomeAppBar(
         onLeadingPressed: _onLeadingPressed,
         onTrailingPressed: _onTrailingPressed,
       ),
       floatingActionButton: FloatingActionButton(
-        elevation: 0.8,
+        elevation: 0.0,
         shape: const CircleBorder(),
         onPressed: _onLocationSearchPressed,
         child: const Icon(CupertinoIcons.add),
@@ -70,45 +76,36 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
           SliverPinnedHeader(
             child: AppBarSearchTextField(
-              controller: _searchTextController,
               focusNode: _searchFocusNode,
+              controller: _searchTextController,
             ),
           ),
-          SliverPinnedHeader.builder((context, overlap) {
-            return Visibility(visible: !overlap, child: const Divider());
-          }),
+          const SliverPinnedHeader(child: Divider()),
           const CupertinoSliverRefreshControl(),
-          MultiSliver(
-            pushPinnedChildren: true,
-            children: [
-              SliverPinnedHeader.builder((context, overlap) {
-                return CustomLabelTile(overlap: overlap, title: Text(localizations.nearyou.capitalize()));
-              }),
-              SliverPinnedHeader.builder((context, overlap) {
-                return Visibility(visible: overlap, child: const Divider());
-              }),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index.isEven) {
-                      index ~/= 2;
-                      return CustomListTile(
-                        title: const Text('Abatta - Koumassi'),
-                        subtitle: const Text('1000 F'),
-                        trailing: const CircleAvatar(
-                          radius: 15.0,
-                          backgroundColor: CupertinoColors.activeGreen,
-                          child: Text('12'),
-                        ),
-                        onTap: () {},
-                      );
-                    }
-                    return const Divider(indent: 16.0);
-                  },
-                  childCount: max(0, 2 * 2 - 1),
-                ),
-              ),
-            ],
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (index.isEven) {
+                  index ~/= 2;
+                  return HomeTripItemWidget(
+                    places: "02 Places",
+                    amount: "1000 FCFA",
+                    departureDateTime: "Aujourd'hui à 20h00",
+                    departureTitle: "Koumassi Mairie",
+                    departureSubtitle: "Bingerville, Côte d'Ivoire",
+                    destinationTitle: "Adjame Mairie",
+                    destinationSubtitle: "Bingerville, Côte d'Ivoire",
+                    onPressed: _onTripItemPressed,
+                  );
+                }
+                return const Divider(height: 12.0, thickness: 12.0);
+              },
+              childCount: max(0, 4 * 2 - 1),
+            ),
+          ),
+          const SliverFillRemaining(
+            hasScrollBody: false,
+            child: SafeArea(child: SizedBox(height: 80.0)),
           ),
         ],
       ),

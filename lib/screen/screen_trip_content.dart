@@ -3,19 +3,33 @@ import 'package:maplibre_gl/mapbox_gl.dart';
 
 import '_screen.dart';
 
-class TripMapScreen extends StatefulWidget {
-  const TripMapScreen({super.key});
+class TripContentScreen extends StatefulWidget {
+  const TripContentScreen({super.key});
 
-  static const String path = 'trip/map';
-  static const String name = 'trip_map';
+  static const String path = 'trip/content';
+  static const String name = 'trip_content';
 
   @override
-  State<TripMapScreen> createState() => _TripMapScreenState();
+  State<TripContentScreen> createState() => _TripContentScreenState();
 }
 
-class _TripMapScreenState extends State<TripMapScreen> {
+class _TripContentScreenState extends State<TripContentScreen> {
   /// Widgets
   late final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  /// Navigator
+  // void _openTripMapSheet() async {
+    // final controller = _scaffoldKey.currentState!.showBottomSheet(
+    //   (context) {
+    //     return const TripContentSheet();
+    //   },
+    //   enableDrag: false,
+    //   elevation: 6.0,
+    // );
+
+    // await controller.closed;
+    // if (mounted) Navigator.pop(context);
+  // }
 
   /// MapLibre
   MaplibreMapController? _mapController;
@@ -70,9 +84,7 @@ class _TripMapScreenState extends State<TripMapScreen> {
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: const TripMapAppBar(),
-      bottomSheet: TripMapSearchSheet(
-        maxChildSize: maxChildSize,
-      ),
+      bottomSheet: TripContentSheet(maxChildSize: maxChildSize),
       body: Listener(
         onPointerUp: _onMapPointUp,
         child: TripMap(

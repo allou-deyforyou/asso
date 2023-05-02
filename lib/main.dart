@@ -1,13 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 import 'screen/_screen.dart';
 
-void main() async {
-  runService();
-  runApp(const MyApp());
-}
+void main() => runService(const MyService()).whenComplete(() => runApp(const MyApp()));
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,6 +24,7 @@ class _MyAppState extends State<MyApp> {
 
     /// Customer
     _router = GoRouter(
+      debugLogDiagnostics: kDebugMode,
       routes: [
         GoRoute(
           path: HomeScreen.path,
@@ -51,24 +50,34 @@ class _MyAppState extends State<MyApp> {
               },
             ),
             GoRoute(
-              path: TravelMapScreen.path,
-              name: TravelMapScreen.name,
+              path: TripContentScreen.path,
+              name: TripContentScreen.name,
               pageBuilder: (context, state) {
                 return const CupertinoPage(
                   child: CustomKeepAlive(
-                    child: TravelMapScreen(),
+                    child: TripContentScreen(),
                   ),
                 );
               },
             ),
             GoRoute(
-              path: TravelRegisterScreen.path,
-              name: TravelRegisterScreen.name,
+              path: TripMapScreen.path,
+              name: TripMapScreen.name,
               pageBuilder: (context, state) {
                 return const CupertinoPage(
-                  fullscreenDialog: true,
                   child: CustomKeepAlive(
-                    child: TravelRegisterScreen(),
+                    child: TripMapScreen(),
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: TripRegisterScreen.path,
+              name: TripRegisterScreen.name,
+              pageBuilder: (context, state) {
+                return const CupertinoPage(
+                  child: CustomKeepAlive(
+                    child: TripRegisterScreen(),
                   ),
                 );
               },
@@ -95,15 +104,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'Asso',
       theme: Themes.theme,
+      routerConfig: _router,
       themeMode: ThemeMode.light,
       darkTheme: Themes.darkTheme,
       color: Themes.primaryColor,
       debugShowCheckedModeBanner: false,
-      routerDelegate: _router.routerDelegate,
       scrollBehavior: const CustomScrollBehavior(),
       supportedLocales: CustomBuildContext.supportedLocales,
-      routeInformationParser: _router.routeInformationParser,
-      routeInformationProvider: _router.routeInformationProvider,
       localizationsDelegates: CustomBuildContext.localizationsDelegates,
     );
   }
